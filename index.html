@@ -126,7 +126,7 @@ button.tog.on{background:var(--ink);color:var(--surface);border-color:var(--ink)
 .ai-suggest{width:100%;border:0;height:64px;margin:-6px 0 10px;background:transparent}
 </style></head><body>
 <header><div class="hwrap">
- <div class="brand">Samish Bay, explained<small>a guided course built on your three spreadsheets</small></div>
+ <div class="brand">Samish Bay, explained<small>a guided course built on Skagit County's closure records</small></div>
  <div class="prog"><span id="progTxt">0 of 12 lessons</span><div class="bar"><i id="progBar"></i></div></div>
  <div class="tabs"><button data-mode="course" class="on">Guided course</button> <button data-mode="explore">Explore freely</button> <button data-mode="gloss">Glossary</button></div>
 </div></header>
@@ -139,7 +139,7 @@ button.tog.on{background:var(--ink);color:var(--surface);border-color:var(--ink)
 <button class="ai-launch" id="ai-launch" type="button" aria-expanded="false" aria-controls="ai-panel"><span class="ai-spark" aria-hidden="true">✦</span><span>Ask about the data</span></button>
 <section class="ai-panel" id="ai-panel" role="dialog" aria-labelledby="ai-title" hidden>
  <div class="ai-head">
-  <div><div class="ai-title" id="ai-title">Ask Claude about Samish Bay</div><div class="ai-status" id="ai-status" role="status" aria-live="polite">Checking the connection…</div></div>
+  <div><div class="ai-title" id="ai-title">Ask about Samish Bay</div><div class="ai-status" id="ai-status" role="status" aria-live="polite">Checking the connection…</div></div>
   <button class="ai-close" id="ai-close" type="button" aria-label="Close">×</button>
  </div>
  <div class="ai-body" id="ai-messages" role="log" aria-live="polite">
@@ -457,11 +457,11 @@ const failRate=a=>a.filter(s=>!s.pass).length;
 const OCT={hourly:"oct2024",start:"2024-10-14",end:"2024-11-02"};
 const LESSONS=[
 {title:"Welcome",kicker:"Start here",
- body:()=>`<p class="big">You downloaded three spreadsheets about Samish Bay. By the end of this course you'll be able to look at any day in them and explain <b>why</b> the bay was open or closed.</p>
+ body:()=>`<p class="big">This course is built on three Skagit County spreadsheets about Samish Bay, plus the river's flow gauge. By the end of this course you'll be able to look at any day in them and explain <b>why</b> the bay was open or closed.</p>
  <h3>What you'll be able to do</h3>
  <ul><li>Explain why oyster beds close after rain</li><li>Read a river-flow graph and spot a storm</li><li>Tell whether a storm is big enough to close the bay</li><li>Work out a river sample's pass or fail yourself</li><li>Follow one real closure from start to finish</li><li>Read 18 years of closures at a glance, and spot what's odd in the data</li></ul>
  <h3>How it works</h3>
- <ul><li>Each lesson has a short read on the left and a <b>live chart</b> on the right, built from your spreadsheets.</li>
+ <ul><li>Each lesson has a short read on the left and a <b>live chart</b> on the right, built from those spreadsheets.</li>
  <li><b>Show me</b> buttons point at the exact thing the text is talking about.</li>
  <li>Words with a ${T("fc","dotted underline")} have a definition; hover them. The <b>Glossary</b> tab has all of them.</li>
  <li>Each lesson ends with a quick <b>check</b>. Getting one wrong just shows you why; nothing is graded.</li></ul>
@@ -474,7 +474,7 @@ const LESSONS=[
  <p>Nobody can test for every germ, so the lab tests for ${T("fc","fecal coliform")}, bacteria that live in the guts of warm-blooded animals. They are an ${T("indicator","indicator")}: if they're in the water, feces are too.</p>
  <div class="callout">The key fact: part of Samish Bay is ${T("conditional","“Conditionally Approved”")}. It's open normally, but a written plan says it <b>must close when the river rises fast</b>, because that's when the waste arrives.</div>`,
  shows:[["land","Where the waste starts"],["river","The river: flow gauge and sampling sites"],["bay","The bay and its conditional area"]],
- stage:(el,k)=>{el.innerHTML=`<h4>From rain to oysters</h4><p class="cap">The chain of cause and effect behind every closure in your spreadsheets.</p>`;diagram(el,k);},
+ stage:(el,k)=>{el.innerHTML=`<h4>From rain to oysters</h4><p class="cap">The chain of cause and effect behind every closure in these records.</p>`;diagram(el,k);},
  quiz:[{q:"Why test for fecal coliform instead of testing for norovirus directly?",o:[["Fecal coliform is the main thing that makes people sick",0,"Not quite: most fecal coliform are harmless. They're tested because they travel with the things that do make people sick."],["It's a cheap, reliable sign that waste, and possibly dangerous germs, are in the water",1,"Right. It's an indicator: easy to measure, and it shows up whenever feces are present."],["Norovirus can't survive in river water",0,"It can, which is the problem. Testing for it directly is just much harder and slower."]]}]},
 {title:"Reading a river",kicker:"Lesson 2 · River flow",
  body:()=>`<p>A ${T("gauge","USGS gauge")} on the Samish measures how much water is flowing, every 15 minutes. Flow is measured in ${T("cfs","cfs")}, cubic feet per second. One cubic foot is about 7.5 gallons.</p>
@@ -651,6 +651,8 @@ d3.selectAll(".tabs button").on("click",function(){setMode(this.dataset.mode)});
  const h=location.hash.match(/^#L(\d+)(?:-(\w+))?/);if(h){go(+h[1]);if(h[2]){const bt=document.querySelector(`.show button[data-k="${h[2]}"]`);if(bt)bt.click();}}else if(location.hash==="#explore"){go(cur);setMode("explore");}else go(cur);}
 
 
+
+window.addEventListener('hashchange',()=>{const h=location.hash.match(/^#L(\d+)/);if(h&&+h[1]!==cur)go(+h[1]);});
 // ================= ask-the-data chat (public build: Cloud Run backend) =================
 {
   const API = "https://samish-chat-957730565502.us-central1.run.app";
